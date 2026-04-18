@@ -43,7 +43,7 @@ module tt_um_multiplexer (
     // --------------------------------------------------------
     wire [7:0] sw_uo_out, sw_uio_out, sw_uio_oe;
     
-    tt_um_advaittej_stopwatch sw_inst (
+    tt_um_advaittej sw_inst (
         // WARNING: ui_in[7:6] are stripped. 
         // target_time[3:2] will always be 00 unless the module is rewritten.
         .ui_in   ({2'b00, shared_ui_in}), 
