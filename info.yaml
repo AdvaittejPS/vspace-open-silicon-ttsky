@@ -7,7 +7,7 @@ project:
   language:     "Verilog" 
   clock_hz:     10000000       # CRITICAL: 10 MHz required for UART and PWM timing
 
-  tiles: "1x3"          
+  tiles: "1x2"          
 
   top_module:  "tt_um_multiplexer"
 
