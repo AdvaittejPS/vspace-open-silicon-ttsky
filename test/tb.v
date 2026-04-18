@@ -23,8 +23,15 @@ module tb ();
   wire VGND = 1'b0;
 `endif
 
-  // Instantiate the Top-Level Multiplexer
-  tt_um_multiplexer user_project (
+  // Instantiate the Top-Level Multiplexer with Parameter Overrides
+  tt_um_multiplexer 
+`ifndef GL_TEST
+  #(
+      .CLOCKS_PER_SECOND(24'd99), // 100 clocks = 1 simulated second
+      .CLOCKS_PER_BAUD(12'd2)     // 3 clocks = 1 baud bit
+  )
+`endif
+  user_project (
 `ifdef GL_TEST
       .VPWR(VPWR),
       .VGND(VGND),
