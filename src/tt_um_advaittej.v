@@ -1,6 +1,6 @@
 `default_nettype none
 
-module tt_um_advaittej_stopwatch #(
+module tt_um_advaittej #(
     parameter CLOCKS_PER_SECOND = 24'd9_999_999, // 10 MHz = 1 sec
     parameter CLOCKS_PER_BAUD   = 12'd1041       // 10 MHz / 9600 baud = ~1042
 )(
@@ -190,7 +190,7 @@ module tt_um_advaittej_stopwatch #(
     // ==========================================
     // 4. ALARM & UART TX TRANSMITTER
     // ==========================================
-    wire [3:0] target_time = ui_in[7:4]; 
+    wire [3:0] target_time = ui_in[5:2]; 
     wire alarm_match = (current_digit == target_time);
     assign uo_out[7] = alarm_match;
 
