@@ -1,51 +1,48 @@
 # Tiny Tapeout project information
 project:
-  title:        "Multiplexed Multi-Core: SpO2, Stopwatch & PWM" 
+  title:        "Multiplexed 3x1 SoC: SNN AFib, Stopwatch & PWM" 
   author:       "Your Name"      
   discord:      ""      
-  description:  "A 3-in-1 TT submission featuring an SpO2 engine, UART Stopwatch, and a QuadPulse PWM, selected via hardware pins."
+  description:  "A 3-in-1 TT submission featuring a Spiking Neural Network AFib detector, UART Stopwatch, and a QuadPulse PWM."
   language:     "Verilog" 
-  clock_hz:     10000000       # CRITICAL: Set to 10 MHz for UART and PWM timing
+  clock_hz:     10000000       # CRITICAL: 10 MHz required for UART and PWM timing
 
-  tiles: "1x1"          
+  tiles: "3x1"          
 
   top_module:  "tt_um_multiplexer"
 
   source_files:
-    - "top.v"
-    - "tt_um_advaittej.v"
-    - "tt_um_quadpulse_pwm.v"
-    - "tt_um_shailesh_spo2_engine.v"
+    - "top.v"  # Make sure this exactly matches the name of your monolithic file
 
 pinout:
-  # Inputs
-  ui[0]: "SpO2: RX / StopW: Start / PWM: E-Stop"
-  ui[1]: "SpO2: SampleClk / StopW: Lap / PWM: FreqSel0"
-  ui[2]: "SpO2: ChSel / StopW: TargetTime[0] / PWM: FreqSel1"
-  ui[3]: "StopW: TargetTime[1]"
+  # Inputs (ui_in)
+  ui[0]: "SNN: r_peak / StopW: Start / PWM: E-Stop"
+  ui[1]: "SNN: w_load / StopW: Lap / PWM: FreqSel0"
+  ui[2]: "SNN: w_data / StopW: TargetTime[0] / PWM: FreqSel1"
+  ui[3]: "SNN: w_clk / StopW: TargetTime[1]"
   ui[4]: "StopW: TargetTime[2]"
   ui[5]: "StopW: TargetTime[3]"
   ui[6]: "Design Select 0"
-  ui[7]: "Design Select 1 (00=SpO2, 01=StopW, 10=PWM)"
+  ui[7]: "Design Select 1 (00=SNN, 01=StopW, 10=PWM)"
 
-  # Outputs
-  uo[0]: "Muxed Output 0 (SpO2 Valid / StopW Seg A / PWM Ch0)"
-  uo[1]: "Muxed Output 1 (SpO2 Data / StopW Seg B / PWM Ch1)"
-  uo[2]: "Muxed Output 2 (SpO2 Data / StopW Seg C / PWM Ch2)"
-  uo[3]: "Muxed Output 3 (SpO2 Data / StopW Seg D / PWM Ch3)"
-  uo[4]: "Muxed Output 4 (SpO2 Data / StopW Seg E / PWM E-Stop Flag)"
-  uo[5]: "Muxed Output 5 (SpO2 Data / StopW Seg F)"
-  uo[6]: "Muxed Output 6 (SpO2 Data / StopW Seg G)"
-  uo[7]: "Muxed Output 7 (SpO2 Data / StopW Alarm Match)"
+  # Outputs (uo_out)
+  uo[0]: "SNN: afib_flag / StopW: Seg A / PWM: Ch0"
+  uo[1]: "SNN: out_valid / StopW: Seg B / PWM: Ch1"
+  uo[2]: "SNN: any_spike / StopW: Seg C / PWM: Ch2"
+  uo[3]: "SNN: fsm_state[0] / StopW: Seg D / PWM: Ch3"
+  uo[4]: "SNN: fsm_state[1] / StopW: Seg E / PWM: E-Stop Mirror"
+  uo[5]: "SNN: conf_latch[0] / StopW: Seg F"
+  uo[6]: "SNN: conf_latch[1] / StopW: Seg G"
+  uo[7]: "SNN: conf_latch[2] / StopW: Alarm Match"
 
-  # Bidirectional pins
-  uio[0]: "Muxed Bidir 0 (SPI MOSI / UART TX)"
-  uio[1]: "Muxed Bidir 1 (SPI SCLK / UART RX)"
-  uio[2]: "Muxed Bidir 2 (SPI CS_N)"
+  # Bidirectional pins (uio)
+  uio[0]: "SNN: asystole (out) / StopW: TX (out) / PWM: MOSI (in)"
+  uio[1]: "StopW: RX (in) / PWM: SCLK (in)"
+  uio[2]: "PWM: CS_N (in)"
   uio[3]: ""
-  uio[4]: "StopW: Lap 1 Data [0]"
-  uio[5]: "StopW: Lap 1 Data [1]"
-  uio[6]: "StopW: Lap 1 Data [2]"
-  uio[7]: "StopW: Lap 1 Data [3]"
+  uio[4]: "StopW: Lap 1 Data [0] (out)"
+  uio[5]: "StopW: Lap 1 Data [1] (out)"
+  uio[6]: "StopW: Lap 1 Data [2] (out)"
+  uio[7]: "StopW: Lap 1 Data [3] (out)"
 
 yaml_version: 6
