@@ -3,15 +3,18 @@
 // ============================================================================
 // 1. TOP LEVEL MULTIPLEXER
 // ============================================================================
-module tt_um_multiplexer (
-    input  wire [7:0] ui_in,    // Dedicated inputs
-    output wire [7:0] uo_out,   // Dedicated outputs
-    input  wire [7:0] uio_in,   // IOs: Input path
-    output wire [7:0] uio_out,  // IOs: Output path
-    output wire [7:0] uio_oe,   // IOs: Enable path (active high)
-    input  wire       ena,      // Goes high when design is enabled
-    input  wire       clk,      // Clock
-    input  wire       rst_n     // Reset_n (low to reset)
+module tt_um_multiplexer #(
+    parameter CLOCKS_PER_SECOND = 24'd9_999_999,
+    parameter CLOCKS_PER_BAUD   = 12'd1041
+)(
+    input  wire [7:0] ui_in,    
+    output wire [7:0] uo_out,   
+    input  wire [7:0] uio_in,   
+    output wire [7:0] uio_out,  
+    output wire [7:0] uio_oe,   
+    input  wire       ena,      
+    input  wire       clk,      
+    input  wire       rst_n     
 );
 
     // --------------------------------------------------------
@@ -46,7 +49,10 @@ module tt_um_multiplexer (
     // --------------------------------------------------------
     wire [7:0] sw_uo_out, sw_uio_out, sw_uio_oe;
     
-    tt_um_advaittej sw_inst (
+    tt_um_advaittej #(
+        .CLOCKS_PER_SECOND(CLOCKS_PER_SECOND),
+        .CLOCKS_PER_BAUD(CLOCKS_PER_BAUD)
+    ) sw_inst (
         .ui_in   ({2'b00, shared_ui_in}), 
         .uo_out  (sw_uo_out),
         .uio_in  (uio_in),
